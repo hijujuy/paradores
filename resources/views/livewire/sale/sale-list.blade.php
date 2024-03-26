@@ -73,8 +73,8 @@
                 <td>{{ $sale->day }}</td>
                 <td>{{ $sale->cashier->code }}</td>
                 <td>
-                    {{-- <a href="{{route('sales.invoice',$sale)}}" class="btn bg-navy btn-sm" title="Generar PDF" target="_blank"> --}}
-                    <a class="btn bg-navy btn-sm" title="Generar PDF" target="_blank">
+                    <a href="{{route('sales.invoice',$sale)}}" class="btn bg-navy btn-sm" title="Generar PDF" target="_blank">
+                    {{-- <a class="btn bg-navy btn-sm" title="Generar PDF" target="_blank"> --}}
                         <i class="far fa-file-pdf"></i>
                     </a>
                 </td>

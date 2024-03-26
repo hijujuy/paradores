@@ -7,60 +7,136 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Instalación
+1. Clonar el repositorio
+```bash
+$ git clone https://github.com/suselancha/paradores.git
+```
+2. Ejecutar
+```bash
+$ cd paradores
+$ npm install
+$ composer install
+```
+3. Levantar la base de datos
+* En la carpeta "sql", migrar "paradores.sql"
+* Con MysqlWorkbench levantar los modelos entidad-relacion (der-ventas.mwb)
+4. Clonar el archico __.env.example y renombrar la copia a __.env__
+6. Cambiar las variables de entorno de MySql
+7. Reconstruir base de datos y ejecutar seeds (opcional - en caso de no tener éxito con el punto 3)
+```bash
+$ php make:migrate:fresh --seed
+```
+9. Levantar la aplicación
+```bash
+$ php artisan serve
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Pruebas (a modificar)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+# unit tests
+$ npm run test
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# e2e tests
+$ npm run test:e2e
 
-## Learning Laravel
+# test coverage
+$ npm run test:cov
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tips para desarrollo
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Generar modelos, migraciones y factorias
+```
+php artisan make:model Client -mf
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Para tablas intermedias, no es necesario crear modelo, sólo migración
+```
+php artisan make:migration create_imte_sale_table
+```
 
-## Laravel Sponsors
+3. Ejecutar migraciones. Nombre modelo singular
+```
+- php artisan migrate
+- php artisan migrate:fresh
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. Autenticación
+```
+- composer require laravel/ui
+- php artisan ui bootstrap
+- php artisan ui bootstrap --auth
+- npm install
+- Crear la carpeta "css" en "public" y copiar el .css de bootstrap
+- Modificar el archivo "app-blade.php".
+{{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
+<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+```
 
-### Premium Partners
+5. Plantilla AdminLTE
+```
+- https://adminlte.io/
+- Descargar plantilla
+- Descomprimir y copiar en la carpete "public", las carpetas "dist y plugins"
+- Ejecutar: php artisan livewire:layout
+- Crear el archivo: C:\xampp\htdocs\ventas\resources\views\components\layouts\app.blade.php
+- Copiar el codigo del archivo "index.html" al archivo "app.blade.php"
+- En "app.blade.php" agregar {{$slot}}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        {{$slot}}
+    </div><!--/. container-fluid -->
+</section>
+<!-- /.content -->
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+6. Crear componentes livewire
+```
+1. php artisan make:livewire Home/inicio
+CLASS: app/Livewire//Home/Inicio.php
+VIEW:  C:\xampp\htdocs\ventas\resources\views/livewire/home\inicio.blade.php
 
-## Contributing
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+7. Iconos con Fontawesome
+```
+https://fontawesome.com/v5/search
+```
 
-## Code of Conduct
+8. Paginación
+```
+1. php artisan livewire:publish --config
+2. [C:\xampp\htdocs\ventas\config\livewire.php] .......... DONE
+3. Modificar: 'pagination_theme' => 'bootstrap',
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+9. Traducción
+```
+1. Descargar desde: https://github.com/laraveles/spanish
+2. Copiar en "resources\lang" la carpeta "es"
+3. En "config, app.php" modificar => 'locale' => 'es',
+```
 
-## Security Vulnerabilities
+10. Imagenes
+* No almacenar en la carpeta "public", manejar el "storage" => \storage\app\public
+* Ejecutar: ```php artisan storage:link``` -> INFO  The [C:\xampp\htdocs\ventas\public\storage] link has been connected to [C:\xampp\htdocs\ventas\storage\app/public].
+* En "config.php, filesystems.php" => modificar: 'default' => env('FILESYSTEM_DISK', 'public')
+* En el modelo importar el trait -> use Livewire\WithFileUploads; use WithFileUploads;
+* Si no muestra la tabla las imagenes, eliminar carpeta "storage" en "public" y volver a ejecutar el punto 2
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+11. Extensiono de Chrome para rellenar campos automaticamente
+* Fake Filler
 
-## License
+12. Controladores
+Crear controlador: ```php artisan make:controller PdfController```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+13. Migraciones y Seed
+Ejecutar Seed: ```php artisan make:seed```
+Ejecutar Migraciones y Seeds: ```php artisan migrate:fresh --seed```
+
+## Stack usado
+* MySQL
+* Laravel

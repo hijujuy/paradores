@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PdfController;
 use App\Livewire\Home\Initial;
 use App\Livewire\Sale\SaleEdit;
 use App\Livewire\Sale\SaleList;
@@ -12,6 +13,7 @@ use App\Livewire\Client\ClientComponent;
 use App\Livewire\Cashier\CashierComponent;
 use App\Livewire\Product\ProductComponent;
 use App\Livewire\Category\CategoryComponent;
+use App\Livewire\Shop\ShopComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +50,8 @@ Route::get('/sale/create', SaleCreate::class)->name('sales.create')->middleware(
 Route::get('/sales',SaleList::class)->name('sales.list')->middleware(['auth']);
 Route::get('/sales/{sale}',SaleShow::class)->name('sales.show')->middleware(['auth']);
 Route::get('/sales/{sale}/edit',SaleEdit::class)->name('sales.edit')->middleware(['auth']);
+
+Route::get('/tienda', ShopComponent::class)->name('tienda')->middleware(['auth']);
+
+// Entre [] cuando queremos ejecutar un metodo del controlador
+Route::get('/sales/invoice/{sale}', [PdfController::class, 'invoice'])->name('sales.invoice')->middleware(['auth']);
