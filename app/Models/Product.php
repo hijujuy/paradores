@@ -15,7 +15,8 @@ class Product extends Model
     
     // Relacion poliformica image
     public function image(){
-        return $this->morphOne(Image::class,'imageable');
+//        return $this->morphOne(Image::class,'imageable');
+return $this->morphOne('App\Models\Image','imageable');
     }
 
     public function category(){

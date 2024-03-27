@@ -37,7 +37,7 @@ class Client extends Component
         $this->nameClient();
     }
 
-    public function nameClient($id=1){
+    public function nameClient($id=3){
         $findClient = Cliente::find($id);
         $this->nameClient = $findClient->name;
     }

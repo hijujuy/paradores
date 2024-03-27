@@ -32,7 +32,7 @@ class SaleCreate extends Component
     public $change=0;
     public $updating=0;
 
-    public $client=1;
+    public $client=3;
 
     public function render()
     {
