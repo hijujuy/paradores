@@ -5,6 +5,7 @@ namespace App\Livewire\Sale;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Client as Cliente;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Client extends Component
 {
@@ -37,9 +38,23 @@ class Client extends Component
         $this->nameClient();
     }
 
-    public function nameClient($id=3){
-        $findClient = Cliente::find($id);
-        $this->nameClient = $findClient->name;
+    public function nameClient($id=null)
+    {
+        try {
+            if (!$id)
+            {
+                $this->client = Cliente::where('name', 'CONSUMIDOR FINAL')->firstOrFail();
+                $this->nameClient = $this->client->name;
+            }
+            else
+            {
+                $this->client = Cliente::findOrFail($id);
+                $this->nameClient = $this->client->name;
+            }            
+        } catch (ModelNotFoundException $e) {            
+            $message = 'El cliente no existe.';
+            $this->dispatch('showAlert', $message);
+        }
     }
 
     // Crear cliente

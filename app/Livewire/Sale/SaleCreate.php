@@ -26,13 +26,17 @@ class SaleCreate extends Component
     public $totalRegistros=0;
 
     //Propiedades pago
-    public $last_status;
     public $cashier;
     public $payment=0;
     public $change=0;
     public $updating=0;
 
     public $client=3;
+
+    public function mount()
+    {
+        $this->setCashier();
+    }
 
     public function render()
     {
@@ -47,9 +51,6 @@ class SaleCreate extends Component
             $this->change = $this->payment - Cart::getTotal();
         }
 
-        $this->last_status = $this->last_status();
-        $this->cashier = $this->cashier();
-
         return view('livewire.sale.sale-create',[
             'cashier' => $this->cashier,
             'products' => $this->products,
@@ -57,7 +58,6 @@ class SaleCreate extends Component
             'total' => Cart::getTotal(),
             'totalArticles' => Cart::totalArticulos()
         ]);
-        
     }
 
     // Crear venta
@@ -192,22 +192,26 @@ class SaleCreate extends Component
         ->paginate($this->pagination);
     }
 
-    // Propiedad para obtener caja abierta por usuario
-    public function cashier()
+    /** 
+     * Propiedad para obtener caja abierta por usuario
+     * Si el cashier es null, se devuelve false
+     */
+    public function setCashier()
     {
-        return StatusCashier::where([
-                'user_id' => userID(),
-                'operation' => 'open'
-            ])->orderBy('id','desc')
-            ->first()
-            ->cashier;
-    }
+        $status = StatusCashier::where([
+            'user_id' => userID()
+        ])->orderBy('id','desc')
+        ->first();
 
-    public function last_status()
-    {
-        return StatusCashier::where('user_id', userID())
-            ->orderBy('id', 'desc')
-            ->first();
+        if (is_null($status) || ($status->operation == 'close'))
+        {
+            $this->cashier = false;
+        }
+        else
+        {
+            $this->cashier = $status->cashier;
+        }
+
     }
 
     public function modalAddArticle()

@@ -1,6 +1,6 @@
 <div>
 
-   @if (!$this->cashier->open)
+   @if (!$this->cashier)
    <x-card cardTitle="No hay caja abierta" cardTitleClass="h5">
 
       <x-slot:cardTools>
