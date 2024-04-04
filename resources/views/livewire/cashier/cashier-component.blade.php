@@ -11,10 +11,10 @@
       <div class="row">
         @if ($totalCashiers)
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-          @foreach ($cashiers as $cashier)          
+          @foreach ($cashiers as $cashier)
             <!-- small card -->
             <div class="small-box {{ $cashier->open ? 'bg-success' : 'bg-primary' }}">
-              <div class="inner" style="width: 250px;">
+              <div class="inner" style="width: 300px;">
                 <h4>{{ $cashier->code }}</h4>
                 <p>{{ $cashier->name }}</p>
                 <p class="h5 badge badge-warning">Estado: {{ $cashier->open ? 'Abierta' : 'Cerrada' }}</p>
@@ -23,15 +23,28 @@
                 <i class="fas fa-cash-register"></i>
               </div>
                             
-              <div class="small-box-footer d-flex justify-content-around">
-                <a wire:click="showCashier({{ $cashier->id }})">
-                  {{ !$cashier->open ? 'Abrir Caja' : 'Cerrar Caja'}}
-                  <i class="fas fa-arrow-circle-right"></i>
-                </a>
-                {{-- <a href="{{route('cashiers.statuses',$cashier)}}" title="Ver">
-                  Ver estados
-                  <i class="fas fa-arrow-circle-right"></i>
-                </a> --}}
+              <div class="small-box-footer">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <button 
+                      wire:click="showCashier({{ $cashier->id }})"
+                      class="btn btn-secondary m-2"
+                      type="button"
+                    >
+                      {{ !$cashier->open ? 'Abrir Caja' : 'Cerrar Caja'}}
+                    </button>
+                  </div>
+                  <div class="col-sm-6">
+                    <a
+                      href="{{ route('cashiers.show', $cashier) }}"
+                      class="btn btn-secondary m-2"
+                    >
+                      Ver estados
+                  </a>
+                  </div>
+                </div>
+                
+                
               </div>
             </div>
           @endforeach
@@ -74,86 +87,7 @@
     </form>
   </x-modal>
 
-  <x-modal modalId="modalShowCashierComplete" modalTitle="Caja">
-    <form wire:submit="openCashier({{ $id }})">
-      <div class="form-row">
-
-        <div class="form-group col-6">
-            <span class="text-bold">Codigo: </span>
-            <span>{{ $code }}</span>
-          </div>
-          <div class="form-group col-6">
-            <span class="text-bold">Nombre:</span>
-            <span>{{ $name }}</span>
-        </div>
-      
-      </div>
-
-      <div class="form-group row">
-        <label for="cash" class="col-lg-3 col-form-label">Efectivo:</label>
-        <div class="col-lg-9">
-          <input 
-            wire:model="cash" 
-            wire:change="totalUpdated()" 
-            id="cash" 
-            type="text" 
-            class="form-control text-right @error('cash') border border-danger @enderror">
-            @error('cash')
-            <div class="alert alert-danger w-80 mt-2 alert-dismissible fade show">
-              {{ $message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            @enderror
-        </div>        
-      </div>
-
-      <div class="form-group row">
-          <label for="debits" class="col-lg-3 col-form-label">Debitos:</label>
-          <div class="col-lg-9">
-            <input wire:model="debits" wire:change="totalUpdated()" id="debits" type="text" class="form-control text-right @error('debits') border border-danger @enderror">
-            @error('debits')
-            <div class="alert alert-danger w-80 mt-2">{{ $message }}</div>
-            @enderror
-          </div>            
-      </div>
-
-      <div class="form-group row">
-        <label for="credits" class="col-lg-3 col-form-label">Creditos:</label>
-        <div class="col-lg-9">
-          <input wire:model="credits" wire:change="totalUpdated()" id="credits" type="text" class="form-control text-right @error('credits') border border-danger @enderror">
-          @error('credits')
-            <div class="alert alert-danger w-80 mt-2">{{ $message }}</div>
-          @enderror
-        </div>        
-      </div>
-
-      <div class="form-group row">
-        <label for="transfers" class="col-lg-3 col-form-label">Transferencias:</label>
-        <div class="col-lg-9">
-          <input wire:model="transfers" wire:change="totalUpdated()" id="transfers" type="text" class="form-control text-right @error('transfers') border border-danger @enderror">
-          @error('transfers')
-            <div class="alert alert-danger w-80 mt-2">{{ $message }}</div>
-          @enderror
-        </div>        
-      </div>
-      
-      <div class="form-group row">
-        <label for="total" class="col-lg-3 col-form-label">Total:</label>
-        <div class="col-lg-9">
-          <input wire:model="total" id="total" type="text" class="form-control text-right @error('total') border border-danger @enderror">
-          @error('total')
-            <div class="alert alert-danger w-80 mt-2">{{ $message }}</div>
-          @enderror
-        </div>        
-      </div>
-
-      <hr>
-      
-      <button class="btn btn-primary float-right">Abrir Caja</button>
-    </form>
-  </x-modal>
+  @include('cashiers.modalStatusCreate')
 
   <x-modal modalId="modalShowCashier" modalTitle="Caja">
     <form wire:submit="openCashier({{ $id }})">
@@ -277,6 +211,6 @@
     </form>
   </x-modal>
 
-  @include('cashiers.formClose')
+  @include('cashiers.modalStatusClose')
   
 </div>

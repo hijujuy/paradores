@@ -39,7 +39,7 @@ Route::get('/home', Initial::class)->name('home');
 Route::get('/categories', CategoryComponent::class)->name('categories');
 
 Route::get('/cashiers', CashierComponent::class)->name('cashiers');
-Route::get('/cashiers/{cashier}/statuses', CashierShow::class)->name('cashiers.statuses');
+Route::get('/cashiers/{cashier}', CashierShow::class)->name('cashiers.show');
 
 Route::get('/clients', ClientComponent::class)->name('clients')->middleware(['auth']);
 
