@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Cashier;
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,6 +28,10 @@ class Sale extends Model
 
     public function items(){
         return $this->belongsToMany(Item::class)->withPivot(['quantity','day']);
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
     }
     
 }

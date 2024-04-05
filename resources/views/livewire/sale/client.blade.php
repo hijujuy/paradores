@@ -1,6 +1,6 @@
 <div>
     <div class="card card-info">
-        <div class="card-header">
+        <div class="card-header py-1">
             <h3 class="card-title">
               <i class="fas fa-user"></i>
                Cliente: <span class="badge badge-secondary">{{$nameClient}}</span> 
@@ -10,10 +10,10 @@
                 <button wire:click="openModal" class="btn bg-purple btn-sm">Crear cliente</button>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body pt-1 pb-2">
             <div class="row">
               <div class="col-6">
-                <label>Seleccionar cliente:</label>
+                <label class="mb-0">Seleccionar cliente:</label>
 
                 <!--input group -->
                 <div class="input-group" wire:ignore>

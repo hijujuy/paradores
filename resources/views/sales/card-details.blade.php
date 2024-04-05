@@ -42,7 +42,7 @@
                     <tr>
                         <td>{{$product->id}}</td>
                         <td>
-                            <x-image :item="$product->associatedModel" size="60" />
+                            <x-image :item="$product->associatedModel" size="20" />
 
                         </td>
                         <td>{{$product->name}}</td>
@@ -92,7 +92,7 @@
                     <tr>
                         <td colspan="4">
                             {{-- Boton crear venta --}}
-                            <button wire:click="modalAddArticle" class="btn btn-primary float-left">
+                            <button wire:click="modalAddArticle" class="btn btn-sm btn-primary float-left">
                                 <i class="fas fa-plus-circle"></i>
                                 Agregar Articulo
                             </button>

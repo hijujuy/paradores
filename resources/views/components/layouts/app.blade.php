@@ -25,7 +25,11 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    @include('components.layouts.partials.content-header')
+    @if (Route::currentRouteName() != 'sales.create')  
+      @include('components.layouts.partials.content-header')
+    @else
+      <hr class="mb-1">
+    @endif  
     <!-- /.content-header -->
 
     <!-- Main content -->

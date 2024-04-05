@@ -2,11 +2,16 @@
 
 namespace App\Livewire\Sale;
 
+use SplStack;
+use stdClass;
 use App\Models\Cart;
 use App\Models\Item;
 use App\Models\Sale;
+use App\Models\Payment;
+
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\PaymentType;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Models\StatusCashier;
@@ -24,13 +29,16 @@ class SaleCreate extends Component
     public $search='';
     public $pagination=5;
     public $totalRegistros=0;
+    public $total_payment=0;
+    public $total_payment_error = false;
 
     //Propiedades pago
     public $cashier;
     public $payment=0;
     public $change=0;
     public $updating=0;
-
+    public $payment_types = [];
+    public $payments = [];
     public $client=3;
 
     public function mount()
@@ -39,7 +47,7 @@ class SaleCreate extends Component
     }
 
     public function render()
-    {
+    {        
         if($this->search!=''){
             $this->resetPage();
         }
@@ -50,6 +58,8 @@ class SaleCreate extends Component
             $this->payment = Cart::getTotal();
             $this->change = $this->payment - Cart::getTotal();
         }
+
+        $this->payment_types = PaymentType::whereNot('id',3)->get();
 
         return view('livewire.sale.sale-create',[
             'cashier' => $this->cashier,
@@ -62,9 +72,7 @@ class SaleCreate extends Component
 
     // Crear venta
     public function createSale(){
-
         $cart = Cart::getCart();
-
         if(count($cart)==0){
             $this->dispatch('msg','No hay productos',"danger");
             return;
@@ -104,13 +112,48 @@ class SaleCreate extends Component
 
             }
 
-            /* Actualizacion de estado de caja abierta */
-            $this->cashier->cash += $sale->total;
+            //Agrega los medios de pago a la venta
+            //Sumo los medios de pago hermanos
+            $cash_sale = 0;
+            $debit_sale = 0;
+            $credit_sale = 0;
+            $transfer_sale = 0;
+            foreach ($this->payments as $key => $payment) {
+                $paymentType = PaymentType::find($payment->payment_type_id);
+                
+                $newpayment = new Payment();
+                $newpayment->amount = $payment->amount;
+                $newpayment->reference = $payment->reference;
+                $newpayment->paymentType()->associate($paymentType);
+                $newpayment->sale()->associate($sale);
+                $newpayment->save();
+
+                switch ($newpayment->paymentType->id) {
+                    case PaymentType::CASH:
+                        $cash_sale += $newpayment->amount;
+                        break;
+                    case PaymentType::DEBIT:                        
+                        $debit_sale += $newpayment->amount;
+                        break;
+                    case PaymentType::CREDIT:
+                        $credit_sale += $newpayment->amount;
+                        break;
+                    case PaymentType::TRANSFER:
+                        $transfer_sale += $newpayment->amount;
+                        break;
+                }
+            }          
+            
+            // Actualizacion de estado de caja abierta
+            $this->cashier->cash += $cash_sale;
+            $this->cashier->debits += $debit_sale;
+            $this->cashier->credits += $credit_sale;
+            $this->cashier->transfers += $transfer_sale;
             $this->cashier->total += $sale->total;
             $this->cashier->update();
 
             Cart::clear();
-            $this->reset(['payment','change','client']);
+            $this->reset(['payment','change','client', 'payments', 'total_payment']);
             $this->dispatch('showAlert', 'Venta creada correctamente');
             //$this->dispatch('msg','','success',$sale->id);
         });
@@ -203,19 +246,50 @@ class SaleCreate extends Component
         ])->orderBy('id','desc')
         ->first();
 
-        if (is_null($status) || ($status->operation == 'close'))
-        {
+        if (is_null($status) || ($status->operation == 'close')){
             $this->cashier = false;
-        }
-        else
-        {
+        } else {
             $this->cashier = $status->cashier;
         }
-
     }
 
-    public function modalAddArticle()
-    {
+    public function modalAddArticle(){
         $this->dispatch('open-modal', 'modalAddArticle');
     }
+
+    public function addPayment(PaymentType $paymentType) {
+        /* Agrego un medio de pago  */
+        $payment = new stdClass();
+        $payment->name = $paymentType->name;
+        $payment->payment_type_id = $paymentType->id;
+        $payment->reference = '';
+
+        /* Asigno importe complementario al total a pagar */
+        $total_bill = Cart::getTotal();        
+        $payment->amount = (float) ($total_bill - $this->total_payment);
+        $this->payments[] = $payment;
+
+        /* Actualizo el total a pagar */
+        $this->calculateTotalPayment();
+    }
+
+    public function removePayment($index) {
+        array_splice($this->payments, $index, 1);
+    }
+
+    public function calculateTotalPayment() {
+        $this->reset('total_payment');
+        foreach ($this->payments as $payment) {
+            $this->total_payment += $payment->amount;
+        }
+
+        /* Muestro border rojo al total a pagar 
+        porque excede al total facturado */
+        if ($this->total_payment > Cart::getTotal()) {
+            $this->total_payment_error = true;
+        }else{
+            $this->total_payment_error = false;
+        }
+    }
+
 }

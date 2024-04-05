@@ -39,25 +39,18 @@
 
       {{-- CONTENT --}}
       <div class="row">
-        {{-- COLUMNA DETALLES VENTA --}}
-        <div class="col">
-         <div class="row">
-            <div class="col-md-6">
-               {{-- Card cliente --}}
-               @livewire('sale.client')
-            </div>
-            <div class="col-md-6">
-               {{-- Card pago --}}
-               @include('sales.card-pago')
-            </div>
+         {{-- COLUMNA DETALLES VENTA --}}
+         <div class="col-md-6">
+            {{-- Card details --}}
+            @include('sales.card-details')
          </div>
-         <div class="row">
-            <div class="col">
-               {{-- Card details --}}
-               @include('sales.card-details')           
-            </div>
+         
+         <div class="col-md-6">
+            {{-- Card cliente --}}
+            @livewire('sale.client')
+            {{-- Card pago --}}
+            @include('sales.card-pago')
          </div>
-        </div>
       </div>
       
       <x-slot:cardFooter>           
