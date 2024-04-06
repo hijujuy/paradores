@@ -13,7 +13,11 @@ class PdfController extends Controller
     public function invoice(Sale $sale)
     {
         $shop = Shop::first();
+        
         $pdf = Pdf::loadView('sales.invoice', compact('sale', 'shop'));
+        $pdf->set_paper(array(0, 0, 200.44, 842.07), 'portrait');
+
+        //$pdf = Pdf::loadView('sales.invoice', compact('sale', 'shop'));
         //return $pdf->download('invoice.pdf');
         return $pdf->stream('invoice.pdf');
     }

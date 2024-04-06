@@ -63,125 +63,82 @@
 
     </style>
 </head>
-<body>
+<body style="margin-left:-2.5rem;">
 
-    <table class="" width="100%">
-        <tr>
-            <td width="25%">
-                <img src="{{public_path().'/'.'storage/'.$shop->image->url}}" width="150px">
-
-            </td>
-            <td width="50%" style="text-align: center">
-                <h1>{{$shop->name}}</h1>
-
-                @if($shop->slogan)
-                    <p>{{$shop->slogan}}</p>
-                @endif
-
-            </td>
-            <td width="25%">
-
-                @if($shop->telefono)
-                    <span class="shop-info">
-                       <b>Telefono:</b> {{$shop->telefono}}
-                    </span>
-                @endif    
-                @if($shop->email)
-                    <span class="shop-info">
-                        <b>Email:</b> {{$shop->email}}
-                    </span>
-                @endif                   
-                @if($shop->direccion)
-                    <span class="shop-info">
-                        <b>Direccion:</b> {{$shop->direccion}}
-                    </span>
-                @endif  
-                @if($shop->ciudad)
-                <span class="shop-info">
-                    <b>Ciudad:</b>{{$shop->ciudad}}
-                </span>
-                @endif                 
+    <table width="100%" style="text-align: left; margin-top:-4rem;">
+        <tr>        
+            <td width="100%" style="text-align: center">
+                <p>X</p>
+                <h5 style="margin-top:-1rem;">DOCUMENTO FISCAL</h5>
+                <h3 style="margin-top:-1rem;">{{$shop->name}}</h3>
             </td>
         </tr>
-
+        <tr>
+            <td width="100%">
+                <p style="margin-top:-2rem;">Fecha-Hora: {{$sale->created_at}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                    <p style="margin-top:-2rem;">Nº Operación: {{$sale->id}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td width="100%">
+                <p style="margin-top:-2rem;">Vendedor: {{ Auth::user()->name }}</p>
+            </td>
+        </tr>
     </table>
+
+    <hr style="margin-top:-1rem;" />
 
     <table width="100%">
-        <tr>
-            <td width=33%>
-                <h2 style="margin-bottom: .5rem">Cliente:</h2>
+        <tbody>
+            <tr>
+                <td>
+                    <p style="margin-top:-1rem; font-size:small">[COD]</p>
+                </td>
+                <td>
+                    <p style="margin-top:-1rem; font-size:small">DESCRIPCION</p>
+                </td>
+            </tr>
+            <tr>
+                <td width="33%">
+                    <p style="margin-top:-2rem; font-size:small">CANT</p>
+                </td>
+                <td width="33%">
+                    <p style="margin-top:-2rem; font-size:small">PRECIO UNIT</p>
+                </td>
+                <td width="33%">
+                    <p style="margin-top:-2rem; font-size:small">IMPORTE</p>
+                </td>
+            </tr>
+        </tbody>
 
-                @if($sale->client->name)
-                <span class="shop-info">
-                    <b>Nombre: </b>{{$sale->client->name}}
-                </span>
-                @endif  
-
-                @if($sale->client->identificacion)
-                <span class="shop-info">
-                    <b>Identificacion: </b>{{$sale->client->identificacion}}
-                </span>
-                @endif  
-
-                @if($sale->client->telefono)
-                <span class="shop-info">
-                    <b>Telefono: </b>{{$sale->client->telefono}}
-                </span>
-                @endif  
-
-                @if($sale->client->email)
-                <span class="shop-info">
-                    <b>Email: </b>{{$sale->client->email}}
-                </span>
-                @endif 
-
-                @if($sale->client->empresa)
-                <span class="shop-info">
-                    <b>Empresa: </b>{{$sale->client->empresa}}
-                </span>
-                @endif 
-
-                @if($sale->client->nit)
-                <span class="shop-info">
-                    <b>Nit: </b>{{$sale->client->nit}}
-                </span>
-                @endif 
-            </td>
-            <td width="33%">
-                <h2 style="text-align: center">
-                    Factura: <span class="factura-id">FV-{{$sale->id}}</span>
-                </h2>
-            </td>
-            <td width="33%">
-                <h3>
-                    Fecha: <span class="factura-fecha">{{$sale->created_at}}</span>
-                </h3>
-            </td>
-        </tr>
     </table>
 
-    <table width="100%" class="productos">
-        <thead>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th style="text-align: center">Items</th>
-            <th>Subtotal</th>
-        </thead>
+    <hr style="margin-top:-1rem;" />
 
+    <table width="100%" style="text-align: left;">
         <tbody>
             @forelse ($sale->items as $item)
             <tr>
-                <td>{{++$loop->index}}</td>
-                <td>{{$item->name}}</td>
-                <td>{{money($item->price)}}</td>
                 <td>
-                    <div class="badge">
-                        {{$item->qty}}
-                    </div>
+                    <p style="margin-top:-1rem; font-size:small">[{{$item->id}}]</p>
                 </td>
                 <td>
-                    {{money($item->price*$item->qty)}}
+                    <p style="margin-top:-1rem; font-size:small">{{$item->name}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td width="33%">
+                    <p style="margin-top:-2rem; font-size:small">{{$item->quantity}}</p>
+                </td>
+                <td width="33%">
+                    <p style="margin-top:-2rem; font-size:small">{{money($item->price)}}</p>
+                </td>
+                <td width="33%">
+                    <p style="margin-top:-2rem; font-size:small">{{money($item->price*$item->quantity)}}</p>
                 </td>
             </tr>
                 
@@ -191,29 +148,28 @@
 
             </tr> 
             @endforelse
-            <tr>
-                <td colspan="3"></td>
-                <td>Total:</td>
-                <td>
-                    <b>{{money($sale->total)}}</b>
-                </td>
-            </tr>
         </tbody>
-
     </table>
 
-    <table width="100%" style="text-align: center; margin-top:5rem;">
+    <hr style="margin-top:-1rem;" />
+
+    <table width="100%" style="text-align: left;">
         <tr>
             <td>
-                ___________________________ <br> 
-                <b>{{$sale->user->name}}</b> <br>
-                Vendedor
+                {{-- <p style="margin-top:-1rem;">ARTICULOS: 2</p> --}}
             </td>
         </tr>
-
+        <tr>
+            <td>
+                <h2 style="margin-top:-2rem;">TOTAL {{money($sale->total)}}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style="margin-top:-2rem;">Gracias por tu compra!</p>
+            </td>
+        </tr>
     </table>
-
-    <p style="text-align: center">Muchas gracias por tu compra!</p>
     
 </body>
 </html>
