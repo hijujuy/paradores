@@ -58,6 +58,9 @@
 
 <!-- PLUGINS -->
 <script>
+
+  //Bootstrap Duallistbox
+  $('.duallistbox').bootstrapDualListbox();
   
   document.addEventListener('livewire:init',() => {
     Livewire.on('close-modal', (idModal) => {

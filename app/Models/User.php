@@ -6,13 +6,18 @@ namespace App\Models;
 use App\Models\Sale;
 use App\Models\Image;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -63,5 +68,25 @@ class User extends Authenticatable
     public function sales()
     {
         return $this->hasMany(Sale::class);
+    }
+
+    protected function activeLabel() : Attribute
+    {
+        return Attribute::make(
+            get: function(){
+                return $this->attributes['active'] ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-warning">Inactivo</span>'; 
+            }
+        );
+    }
+    
+    protected function rolButton() : Attribute
+    {
+        return Attribute::make(
+            get: function(){
+                return $this->attributes['rol'] ?
+                    '<span class="badge badge-success">Activo/span>' : 
+                    '<span class="badge badge-warning">Inactivo</span>'; 
+            }
+        );
     }
 }

@@ -103,6 +103,40 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-shield-alt"></i>
+              <p>
+                Seguridad
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="{{ route('users') }}" class="nav-link">
+                  <i class="nav-icon fas fa-user-shield"></i>
+                  <p>Usuarios</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('roles') }}" class="nav-link">
+                  <i class="nav-icon fas fa-user-tag"></i>
+                  <p>Roles</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('permissions') }}" class="nav-link">
+                  <i class="nav-icon fas fa-key"></i>
+                  <p>Permisos</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

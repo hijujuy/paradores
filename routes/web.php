@@ -1,19 +1,22 @@
 <?php
 
-use App\Http\Controllers\PdfController;
 use App\Livewire\Home\Initial;
 use App\Livewire\Sale\SaleEdit;
 use App\Livewire\Sale\SaleList;
 use App\Livewire\Sale\SaleShow;
 use App\Livewire\Sale\SaleCreate;
+use App\Livewire\Role\RoleComponent;
+use App\Livewire\Shop\ShopComponent;
+use App\Livewire\User\UserComponent;
 use App\Livewire\Cashier\CashierShow;
 use App\Livewire\Product\ProductShow;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
 use App\Livewire\Client\ClientComponent;
 use App\Livewire\Cashier\CashierComponent;
 use App\Livewire\Product\ProductComponent;
 use App\Livewire\Category\CategoryComponent;
-use App\Livewire\Shop\ShopComponent;
+use App\Livewire\Permission\PermissionComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,3 +58,9 @@ Route::get('/tienda', ShopComponent::class)->name('tienda')->middleware(['auth']
 
 // Entre [] cuando queremos ejecutar un metodo del controlador
 Route::get('/sales/invoice/{sale}', [PdfController::class, 'invoice'])->name('sales.invoice')->middleware(['auth']);
+
+Route::get('/users', UserComponent::class)->name('users')->middleware(['auth']);
+
+Route::get('/roles', RoleComponent::class)->name('roles')->middleware(['auth']);
+
+Route::get('/permissions', PermissionComponent::class)->name('permissions')->middleware(['auth']);

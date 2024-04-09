@@ -197,7 +197,6 @@ class ProductComponent extends Component
         $this->dispatch('msg','Producto eliminado correctamente.');
     }
 
-
     // Metodo encargado de la limpieza
     public function clean(){
         $this->reset(['id','name','image','description','purchase_price','sale_price','stock','minimum_stock','barcode','expiration_date','active','category_id']);

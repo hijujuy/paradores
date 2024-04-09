@@ -10,5 +10,7 @@
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 <script src="{{asset('plugins/moment/moment.min.js')}}"></script>
-
+<!-- date-range-picker -->
 <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
