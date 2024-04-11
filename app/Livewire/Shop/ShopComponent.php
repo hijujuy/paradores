@@ -17,10 +17,10 @@ class ShopComponent extends Component
     public $shop;
     public $name;
     public $slogan;
-    public $telefono;
+    public $phone;
     public $email;
-    public $direccion;
-    public $ciudad;
+    public $address;
+    public $city;
     public $image;
     public $imageModel;
 
@@ -43,10 +43,10 @@ class ShopComponent extends Component
 
         $this->name = $this->shop->name;
         $this->slogan = $this->shop->slogan;
-        $this->telefono = $this->shop->telefono;
+        $this->phone = $this->shop->phone;
         $this->email = $this->shop->email;
-        $this->direccion = $this->shop->direccion;
-        $this->ciudad = $this->shop->ciudad;
+        $this->address = $this->shop->address;
+        $this->city = $this->shop->city;
 
         $this->dispatch('open-modal','modalShop');
     }
@@ -58,20 +58,20 @@ class ShopComponent extends Component
         $rules = [
             'name' => 'required|min:5|max:255',
             'slogan' => 'max:255|nullable',
-            'telefono' => 'max:255|nullable',
+            'phone' => 'max:255|nullable',
             'email' => 'email|nullable',
-            'direccion' => 'max:255|nullable',
-            'ciudad' => 'max:255|nullable',
+            'address' => 'max:255|nullable',
+            'city' => 'max:255|nullable',
             'image' => 'image|max:1024|nullable',
         ];
         $this->validate($rules);
 
         $this->shop->name = $this->name;
         $this->shop->slogan = $this->slogan;
-        $this->shop->telefono = $this->telefono;
+        $this->shop->phone = $this->phone;
         $this->shop->email = $this->email;
-        $this->shop->direccion = $this->direccion;
-        $this->shop->ciudad = $this->ciudad;
+        $this->shop->address = $this->address;
+        $this->shop->city = $this->city;
         
         $this->shop->update();
 
@@ -105,14 +105,14 @@ class ShopComponent extends Component
         $this->reset([
             'name',            
             'slogan',
-            'telefono',
+            'phone',
             'email',
-            'direccion',
-            'ciudad',
+            'address',
+            'city',
             'image',
             'imageModel'
         ]);
 
-        $this->resetErrorBag(); // Limpia mensaejs validaciones
+        $this->resetErrorBag(); // Limpia mensajes validaciones
     }
 }

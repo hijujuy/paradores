@@ -30,10 +30,10 @@
                         </td>
                         <td>{{$shop->name}}</td>
                         <td>{{$shop->slogan}}</td>
-                        <td>{{$shop->telefono}}</td>
+                        <td>{{$shop->phone}}</td>
                         <td>{{$shop->email}}</td>
-                        <td>{{$shop->direccion}}</td>
-                        <td>{{$shop->ciudad}}</td>
+                        <td>{{$shop->address}}</td>
+                        <td>{{$shop->city}}</td>
 
                     </tr>
                 </tbody>
@@ -69,9 +69,9 @@
 
             {{-- Input Telefono --}}
             <div class="form-group col-md-5">
-                <label for="telefono">Telefono:</label>
-                <input wire:model='telefono' type="text" class="form-control" placeholder="Telefono tienda" id="telefono">
-                @error('telefono')
+                <label for="phone">Telefono:</label>
+                <input wire:model='phone' type="text" class="form-control" placeholder="Telefono tienda" id="phone">
+                @error('phone')
                     <div class="alert alert-danger w-100 mt-2">{{$message}}</div>
                 @enderror
             </div>
@@ -88,18 +88,18 @@
 
             {{-- Input Direccion --}}
             <div class="form-group col-md-5">
-                <label for="direccion">Direccion:</label>
-                <input wire:model='direccion' type="text" class="form-control" placeholder="Direccion tienda" id="direccion">
-                @error('direccion')
+                <label for="address">Direccion:</label>
+                <input wire:model='address' type="text" class="form-control" placeholder="Direccion tienda" id="address">
+                @error('address')
                     <div class="alert alert-danger w-100 mt-2">{{$message}}</div>
                 @enderror
             </div>
 
             {{-- Input Ciudad --}}
             <div class="form-group col-md-7">
-                <label for="ciudad">Ciudad:</label>
-                <input wire:model='ciudad' type="text" class="form-control" placeholder="Ciudad tienda" id="ciudad">
-                @error('ciudad')
+                <label for="city">Ciudad:</label>
+                <input wire:model='city' type="text" class="form-control" placeholder="Ciudad tienda" id="city">
+                @error('city')
                     <div class="alert alert-danger w-100 mt-2">{{$message}}</div>
                 @enderror
             </div>
