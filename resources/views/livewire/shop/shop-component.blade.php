@@ -1,9 +1,11 @@
 <div>
     <x-card cardTitle="Datos tienda">
        <x-slot:cardTools>
+          @can('shop.edit')
           <a href="#" class="btn btn-primary" wire:click='edit'>
             <i class="fas fa-edit"></i> Editar
           </a>
+          @endcan
        </x-slot>
 
         <div class="table-responsive">

@@ -1,9 +1,11 @@
 <div>
     <x-card cardTitle="Listado clientes ({{$this->totalRegistros}})">
        <x-slot:cardTools>
-          <a href="#" class="btn btn-primary" wire:click='create'>
-            <i class="fas fa-plus-circle"></i> Crear 
-          </a>
+         @can('client.create')
+         <a href="#" class="btn btn-primary" wire:click='create'>
+           <i class="fas fa-plus-circle"></i> Crear 
+         </a>             
+         @endcan
        </x-slot>
 
        <x-table>
@@ -15,8 +17,9 @@
              <th>Telefono</th>
              <th width="3%">...</th>
              <th width="3%">...</th>
-             <th width="3%">...</th>
- 
+             @can('client.delete')
+             <th width="3%">...</th>                 
+             @endcan 
           </x-slot>
 
           @forelse ($clients as $client)
@@ -37,11 +40,13 @@
                         <i class="far fa-edit"></i>
                     </a>
                 </td>
+                @can('client.delete')
                 <td>
                     <a wire:click="$dispatch('delete',{id: {{$client->id}}, eventName:'destroyClient'})" class="btn btn-danger btn-sm" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
                     </a>
                 </td>
+                @endcan
              </tr>
 
           @empty

@@ -22,6 +22,7 @@
                 </thead>
                 <tbody>
                     @forelse ($statuses as $status)
+                    @can('view', $status)
                     <tr wire:click="showById({{ $status->id }})">
                         <td>{{ $status->id }}</td>
                         <td>{{ $status->operation == 'open' ? 'Abrió' : 'Cerró' }}</td>
@@ -30,7 +31,8 @@
                         <td>{{ money($status->total) }}</td>
                         <td>{{ money($status->real_total) }}</td>
                         <td>{{ money($status->diff_total) }}</td>
-                    </tr>
+                    </tr>                        
+                    @endcan
                     @empty
                     <tr>
                         <td colspan="5">Sin Registros</td>

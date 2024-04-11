@@ -41,9 +41,12 @@
              <th>Caja</th>
              <th width="3%">...</th>
              <th width="3%">...</th>
+             @can('sale.edit')
              <th width="3%">...</th>
+             @endcan
+             @can('sale.delet')
              <th width="3%">...</th>
- 
+             @endcan
           </x-slot>
 
           @forelse ($sales as $sale)
@@ -84,17 +87,21 @@
                         <i class="far fa-eye"></i>
                     </a>
                 </td>
+                @can('sale.edit')
                 <td>
                     <a href="{{route('sales.edit',$sale)}}" class="btn btn-primary btn-sm" title="Editar">
                     {{-- <a class="btn btn-primary btn-sm" title="Editar"> --}}
                         <i class="far fa-edit"></i>
                     </a>
                 </td>
+                @endcan
+                @can('sale.delete')
                 <td>
                     <a wire:click="$dispatch('delete',{id: {{$sale->id}}, eventName:'destroySale'})" class="btn btn-danger btn-sm" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
                     </a>
                 </td>
+                @endcan
              </tr>
 
              @empty

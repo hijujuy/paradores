@@ -3,9 +3,11 @@
     <x-card cardTitle="Lista Categorias ({{ $totalRegistros }})" >
 
         <x-slot:cardTools>
+            @can('category.create')
             <a href="#" class="btn btn-primary" wire:click="create">
                 <i class="fas fa-plus-circle"></i> Crear Categoria
             </a>
+            @endcan
         </x-slot:cardTools>
 
         <x-table>
@@ -14,8 +16,12 @@
                 <th>Nro</th>
                 <th>Nombre</th>
                 <th width="3%">...</th>
+                @can('category.edit')
                 <th width="3%">...</th>
+                @endcan
+                @can('category.delete')
                 <th width="3%">...</th>
+                @endcan
             </x-slot>
 
             @forelse ($categories as $category)
@@ -27,11 +33,14 @@
                             <i class="far fa-eye"></i>
                         </a>
                     </td>
+                    @can('category.edit')
                     <td>
                         <a wire:click="edit({{ $category->id }})" class="btn btn-primary btn-sm" title="editar">
                             <i class="fas fa-edit"></i>
                         </a>
                     </td>
+                    @endcan
+                    @can('category.delete')
                     <td>
                         <a 
                             wire:click="$dispatch('delete', {id:{{ $category->id }}, eventName:'destroyCategory'})" 
@@ -39,6 +48,7 @@
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
+                    @endcan
                 </tr>
 
             @empty

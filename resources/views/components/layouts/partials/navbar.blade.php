@@ -29,7 +29,7 @@
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <img src="dist/img/avatar5.png" class="user-image img-circle elevation-2" alt="User Image">
-          <span class="d-none d-md-inline">Name</span>
+          <span class="d-none d-md-inline">{{ auth()->user()->name }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
           <!-- User image -->
@@ -37,8 +37,8 @@
             <img src="dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
   
             <p>
-              Name
-              <small>Cargo</small>
+              {{ auth()->user()->name }}
+              <small>{{ auth()->user()->rolename }}</small>
             </p>
           </li>
           <!-- Menu Body -->

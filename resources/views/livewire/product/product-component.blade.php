@@ -1,9 +1,11 @@
 <div>
     <x-card cardTitle="Listado productos ({{$this->totalRegistros}})">
        <x-slot:cardTools>
+          @can('product.create')
           <a href="#" class="btn btn-primary" wire:click='create'>
             <i class="fas fa-plus-circle"></i> Crear producto
-          </a>
+          </a>              
+          @endcan
        </x-slot>
 
        <x-table>
@@ -16,8 +18,12 @@
              <th>Categoria</th>
              <th>Estado</th>
              <th width="3%">...</th>
+             @can('product.edit')
              <th width="3%">...</th>
+             @endcan
+             @can('product.delete')
              <th width="3%">...</th>
+             @endcan
  
           </x-slot>
 
@@ -42,16 +48,20 @@
                         <i class="far fa-eye"></i>
                     </a>
                 </td>
+                @can('product.edit')
                 <td>
                     <a href="#" wire:click='edit({{$product->id}})' class="btn btn-primary btn-sm" title="Editar">
                         <i class="far fa-edit"></i>
                     </a>
-                </td>
+                </td>                    
+                @endcan
+                @can('product.delete')
                 <td>
                     <a wire:click="$dispatch('delete',{id: {{$product->id}}, eventName:'destroyProduct'})" class="btn btn-danger btn-sm" title="Eliminar">
                         <i class="far fa-trash-alt"></i>
                     </a>
-                </td>
+                </td>     
+                @endcan
              </tr>
 
              @empty

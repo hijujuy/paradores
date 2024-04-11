@@ -83,7 +83,7 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function(){
-                return $this->roles[0];
+                return $this->roles[0]->name;
             }
         );
     }

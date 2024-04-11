@@ -3,9 +3,11 @@
   <x-card cardTitle="Lista Cajas ({{ $this->totalCashiers }})" >
       
       <x-slot:cardTools>
+          @can('cashier.create')
           <a href="#" class="btn btn-primary" wire:click="create">
               <i class="fas fa-plus-circle"></i> Agregar Caja
-          </a>
+          </a>            
+          @endcan
       </x-slot:cardTools>
 
       <div class="row">
