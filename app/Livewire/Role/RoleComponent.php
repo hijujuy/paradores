@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Role;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Eloquent\Builder;
 
 #[Title('Roles')]
 class RoleComponent extends Component
@@ -108,9 +110,20 @@ class RoleComponent extends Component
     {
         $role = Role::find($id);
 
-        $role->delete();
+        $role_is_used = User::whereHas('roles', function(Builder $query) use ($role) {
+            $query->where('name', '=', $role->name);
+        })->count();
 
-        $this->dispatch('showAlert', 'Rol eliminado');
+        if (!$role_is_used) {
+            $role->delete();
+            $this->dispatch('showAlert', 'Rol eliminado');
+        } else {
+            $message = [
+                'title' => 'No se puede eliminar',
+                'text'  => 'El rol no puede ser eliminado porque esta siendo aplicado.'
+            ];
+            $this->dispatch('showError', $message);
+        }
 
     }
 
@@ -127,16 +140,26 @@ class RoleComponent extends Component
 
     public function showPermissions()
     {
-        $permission_ids = collect($this->permissions)
-            ->map(function($permission) { return $permission->id; });
+        if(!$this->id){
+            $message = [
+                'title' => 'No seleccionó ningun rol.',
+                'text'  => "Debe seleccionar un rol haciendo click en algun boton de permisos ",
+                'icon'  => '<i class="fas fa-list"></i>'
+            ];
+            $this->dispatch('showError', $message);
+        }
+        else{
+            $permission_ids = collect($this->permissions)
+                ->map(function($permission) { return $permission->id; });
 
-        $this->leftPermissions = Permission::select('id', 'description', 'name')
-            ->whereNotIn('id', $permission_ids)
-            ->get();
+            $this->leftPermissions = Permission::select('id', 'description', 'name')
+                ->whereNotIn('id', $permission_ids)
+                ->get();
 
-        $this->reset('permissions_selected');
-        
-        $this->dispatch('open-modal', 'modalPermissions');
+            $this->reset('permissions_selected');
+            
+            $this->dispatch('open-modal', 'modalPermissions');
+        }        
     }
 
     public function addPermission(Role $role)

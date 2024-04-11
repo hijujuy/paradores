@@ -11,10 +11,10 @@
              <th>Apellido y Nombre</th>
              <th>Email</th>
              <th>Contraseña</th>
-             <th>Creado</th>
-             <th>Ultima Modificacion</th>
+             <th>Creación</th>
+             <th>Modificación</th>
              <th>Estado</th>
-             <th>Rol</th>
+             <th class="text-center">Rol</th>
           </x-slot>
 
           @forelse ($users as $user)
@@ -42,7 +42,33 @@
                 <td>{{ $user->created_at->format('d/m/Y - H:i') }}</td>
                 <td>{{ $user->updated_at->format('d/m/Y - H:i') }}</td>
                 <td>{!! $user->activeLabel !!}</td>
-                <td>{{ $user->rol }}</td>
+                <td>
+                  @if (!$user->roles->count())
+                  <div class="d-flex">
+                  <div 
+                     class="form-control p-1 text-center" 
+                     style="width: 90px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+                  >Añadir</div>
+                  <a 
+                     wire:click="showRoles({{ $user->id }})" 
+                     class="btn btn-success btn-sm" 
+                     style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;"
+                     title="Ver Permisos">
+                     <i class="fas fa-plus"></i>
+                  </a>
+                  </div>
+                  @else                  
+                  <div class="d-flex">
+                     <div 
+                        class="form-control p-1 text-center" 
+                        style="width: 90px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;"
+                     >{{ $user->roles[0]->name }}</div>
+                     <a wire:click="$dispatch('removerol',{ id: {{ $user->id }}, role_name: '{{ $user->roles[0]->name }}', eventName:'removeRole'})" class="btn btn-danger btn-sm" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i>
+                     </a>
+                  </div>
+                  @endif
+                </td>
              </tr>
 
              @empty
@@ -62,7 +88,7 @@
     </x-card>
 
 
-{{-- @include('products.modal') --}}
+@include('users.modal-role')
 
 </div>
 

@@ -97,6 +97,29 @@
     });
   });
 
+  document.addEventListener('livewire:init',() => {
+    Livewire.on('removerol', (e) => {
+
+      Swal.fire({
+        title: "¿Esta seguro de quitar el rol del usuario?",
+        text: "Todos los permisos seran revocados.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminalo!",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          Livewire.dispatch(e.eventName,{id: e.id, role_name: e.role_name});
+
+        }
+      });
+
+    });
+  });
+
   /* Alerta esquina superior derecha */
   document.addEventListener('livewire:init',() => {
     Livewire.on('showAlert', (message) => {
@@ -109,6 +132,18 @@
         timer: 1500
       });
 
+    });
+  });
+
+  /* Alerta esquina superior derecha */
+  document.addEventListener('livewire:init',() => {
+    Livewire.on('showError', (message) => {
+      message = message[0];
+      Swal.fire({
+        title: message.title,
+        text: message.text,
+        icon: "error"
+      });
     });
   });
 

@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Permission;
 
+use stdClass;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Eloquent\Builder;
 
 #[Title('Permisos')]
 class PermissionComponent extends Component
@@ -113,9 +116,20 @@ class PermissionComponent extends Component
     {
         $permission = Permission::find($id);
 
-        $permission->delete();
+        $permission_is_used = Role::whereHas('permissions', function(Builder $query) use ($permission) {
+            $query->where('name', '=', $permission->name);
+        })->count();
 
-        $this->dispatch('showAlert', 'Permiso eliminado');
+        if (!$permission_is_used) {
+            $permission->delete();
+            $this->dispatch('showAlert', 'Permiso eliminado');
+        } else {
+            $message = new stdClass();
+            $message->title = 'No se puede eliminar';
+            $message->text = 'El permiso no puede ser eliminado porque esta siendo usado.';
+            $this->dispatch('showError', $message);
+        }
+        
 
     }
 

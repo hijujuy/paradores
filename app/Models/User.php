@@ -79,13 +79,11 @@ class User extends Authenticatable
         );
     }
     
-    protected function rolButton() : Attribute
+    public function rolename(): Attribute
     {
         return Attribute::make(
             get: function(){
-                return $this->attributes['rol'] ?
-                    '<span class="badge badge-success">Activo/span>' : 
-                    '<span class="badge badge-warning">Inactivo</span>'; 
+                return $this->roles[0];
             }
         );
     }

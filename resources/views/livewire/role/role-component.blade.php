@@ -9,7 +9,7 @@
     
            <x-table>
               <x-slot:thead>
-                 <th>Descripcion</th>
+                 <th>Nombre</th>
                  <th>Creación</th>
                  <th>Modificación</th>
                  <th colspan="3" class="text-center">Acciones</th>
@@ -72,7 +72,7 @@
                     <tr>
                         <th style="width: 10px">#</th>
                         <th>Descripcion</th>
-                        <th style="width: 40px">Accion</th>
+                        <th style="width: 40px">Quitar</th>
                     </tr>
                 </thead>
                 <tbody>
