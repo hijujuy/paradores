@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Title;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Builder;
@@ -51,8 +52,6 @@ class RoleComponent extends Component
     public function create()
     {
         $this->clean();
-
-        dump($this->id, $this->name);
 
         $this->dispatch('open-modal', 'modalRole');
     }

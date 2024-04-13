@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Sale;
 use App\Models\Image;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -83,7 +84,7 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function(){
-                return $this->roles[0]->name;
+                return Str::ucfirst($this->roles[0]->name);
             }
         );
     }
